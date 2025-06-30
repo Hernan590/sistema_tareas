@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar</title>
+</head>
+<body>
+    <div class="wrapper">
+        <aside id="sidebar">
+            <div class="d-flex">
+                <button id="toggle-btn" type="button">
+                    <i class="fa-brands fa-slack"></i>
+                </button>
+                <div class="sidebar-logo">
+                    <a href="#">Sistema Tareas</a>
+                    <small class="text-white ms-2 d-block mt-2">{{ nombreUsuario }}</small>
+                    <div style="height: 1px; background-color: white; margin-top: 5px; margin-bottom: 5px;"></div>
+                </div>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a routerLink="/panel/dashboard" class="sidebar-link">
+                        <i class="fa-solid fa-house"></i>                        
+                        <span>Inicio</span>
+                    </a>
+                </li>
+                <li *ngIf="rolUsuario === 1" class="sidebar-item">
+                    <a routerLink="/panel/usuarios" class="sidebar-link">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Usuarios</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a routerLink="/panel/tareas" class="sidebar-link">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Tareas</span>
+                    </a>
+                </li>
+                <!-- <li class="sidebar-item">
+                    <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" 
+                        data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                        <i class="fa-solid fa-car-side"></i>
+                        <span>Car</span>
+                    </a>
+                    <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">Login</a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link">Register</a>
+                        </li>
+                    </ul>
+                </li> -->
+                <!-- <li class="sidebar-item">
+                    <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" 
+                        data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>Multi level</span>
+                    </a>
+                    <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" 
+                                data-bs-target="#multi-two" aria-expanded="false" aria-controls="multi-two">
+                                Two Links
+                            </a>
+                            <ul id="multi-two" class="sidebar-dropdown list-unstyled collapse">
+                                <li class="sidebar-item">
+                                    <a href="#" class="sidebar-link">Link 1</a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="#" class="sidebar-link">Link 1</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li> -->
+                <!-- <li class="sidebar-item">
+                    <a routerLink="/panel/tareas" class="sidebar-link">
+                        <i class="fa-solid fa-bell"></i>                        
+                        <span>Notificacion</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a routerLink="/panel/tareas" class="sidebar-link">
+                        <i class="fa-solid fa-gear"></i>                        
+                        <span>Configuracion</span>
+                    </a>
+                </li> -->
+            </ul>
+            <div class="sidebar-footer">
+                <a style="cursor: pointer;" class="sidebar-link" (click)="cerrarSesion()">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Cerrar Sesion</span>
+                </a>
+            </div>
+        </aside>
+        <div class="main p-3">
+            <div class="text-center">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

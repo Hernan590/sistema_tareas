@@ -1,0 +1,41 @@
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
+  <div class="card shadow-lg p-4" style="max-width: 480px; width: 100%;">
+    <h4 class="text-center mb-4">Iniciar sesión</h4>
+        <div class="alert alert-warning" role="alert">
+            <strong>Credenciales de prueba:</strong><br>
+            <i class="fa-solid fa-user-shield text-primary"></i> Admin: <code>admin&#64;gmail.com</code> | <code>123</code><br>
+            <i class="fa-solid fa-user text-secondary"></i> Usuario: <code>julian&#64;gmail.com</code> | <code>123</code>
+        </div>
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="mb-4">
+            <label for="email" class="form-label"><b>Correo electrónico</b></label>
+            <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <input type="email" class="form-control" placeholder="Escriba su correo" [(ngModel)]="email" name="email">
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label for="contrasena" class="form-label"><b>Contraseña</b></label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <input id="password" [type]="verContra ? 'text' : 'password'" class="form-control" placeholder="Escriba su contraseña" [(ngModel)]="password" name="contrasena">
+                <span style="cursor: pointer;" class="input-group-text cursor-pointer" (click)="verPassword()">
+                <i class="fas" [ngClass]="verContra ? 'fa-eye-slash' : 'fa-eye'"></i>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" id="recordar"
+                [(ngModel)]="recordar" name="recordar">
+            <label class="form-check-label" for="recordar">
+            Recordar datos de acceso
+            </label>
+        </div>
+
+        <button class="btn btn-primary w-100" type="submit">Iniciar sesión</button>
+    </form>
+  </div>
+</div>
+

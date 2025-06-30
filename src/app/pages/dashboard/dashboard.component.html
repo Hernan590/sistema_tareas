@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="alert alert-info mt-4">
+        Bienvenido de nuevo, <strong>{{ nombreUsuario }}</strong>. Hoy tienes <b>5 tareas pendientes</b>.
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+        <div class="card-body">
+            <i class="fas fa-users fa-2x mb-2"></i>
+            <h5 class="card-title">Usuarios</h5>
+            <p class="card-text display-6">12</p>
+        </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+        <div class="card-body">
+            <i class="fas fa-check-circle fa-2x mb-2"></i>
+            <h5 class="card-title">Tareas Completadas</h5>
+            <p class="card-text display-6">24</p>
+        </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+        <div class="card-body">
+            <i class="fas fa-hourglass-half fa-2x mb-2"></i>
+            <h5 class="card-title">Pendientes</h5>
+            <p class="card-text display-6">5</p>
+        </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-danger mb-3">
+        <div class="card-body">
+            <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+            <h5 class="card-title">Vencidas</h5>
+            <p class="card-text display-6">3</p>
+        </div>
+        </div>
+    </div>
+    <ul class="list-group mt-4">
+        <li class="list-group-item">
+            ✅ Juan completó la tarea "Subir reporte mensual".
+        </li>
+        <li class="list-group-item">
+            🕒 María tiene pendiente "Actualizar perfil de usuario".
+        </li>
+        <li class="list-group-item">
+            ➕ Nuevo usuario registrado: Ana Torres.
+        </li>
+        <li class="list-group-item">
+            ❌ Usuario eliminado: Esteban Quiroz
+        </li>
+    </ul>
+    <div class="mt-5 d-flex justify-content-center">
+        <div style="width: 420px; height: 420px;">
+            <h5 class="text-center">Resumen de Tareas</h5>
+            <canvas id="tareasChart"></canvas>
+        </div>
+    </div>
+</div>

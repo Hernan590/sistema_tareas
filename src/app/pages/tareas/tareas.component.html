@@ -1,0 +1,388 @@
+<div class="container mt-4">
+  <h2 class="mb-3">Modulo Actividades - Tareas</h2>
+  <div class="row">
+    <div class="col-6 col-sm-12 col-md-3">
+      <div class="input-group mb-3">
+        <span class="input-group-text">
+          <i class="fa-solid fa-signature"></i>        
+        </span>
+        <input type="text" [(ngModel)]="filtroTitulo" class="form-control" placeholder="Buscar por Título">
+      </div>
+    </div>
+    <div class="col-6 col-sm-12 col-md-3">
+      <div class="input-group mb-3">
+        <span class="input-group-text">
+          <i class="fa-solid fa-file-invoice"></i>        
+        </span>
+        <input type="text" [(ngModel)]="filtroDescripcion" class="form-control" placeholder="Buscar por Descripción">
+      </div>
+    </div>
+    <div class="col-6 col-sm-12 col-md-3">
+      <div class="input-group mb-3">
+        <span class="input-group-text">
+          <i class="fas fa-toggle-on"></i>
+        </span>
+        <select [(ngModel)]="filtroEstado" class="form-select">
+          <option value="">Todos los Estados</option>
+          <option value="En progreso">En progreso</option>
+          <option value="Finalizado">Finalizado</option>
+          <option value="Cancelado">Cancelado</option>
+        </select>
+      </div>
+    </div>
+    <div *ngIf="rolUsuario === 1" class="col-6 col-sm-12 col-md-3">
+      <button class="btn btn-success" (click)="abrirModalCrearTarea()">
+        Nueva Actividad <i class="fa-solid fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Título</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Asignados</th>
+          <th>Tareas</th>
+          <th>Creado Por</th>
+          <th>Fecha Creacion</th>
+          <th></th>
+          <th *ngIf="rolUsuario === 1"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <tr *ngFor="let t of proyectosFiltrados; let i = index">
+          <td><small>{{ i + 1 }}</small></td>
+          <td><small>{{ t.nombre }}</small></td>
+          <td class="text-truncate" style="max-width: 250px;" [title]="t.descripcion">
+            <small>{{ t.descripcion.length > 50 ? (t.descripcion | slice:0:50) + '...' : t.descripcion }}</small>
+          </td>          
+          <td>
+            <span class="badge"
+              [ngClass]="{
+                'text-bg-danger': t.nombre_estado === 'Cancelado',
+                'text-bg-warning': t.nombre_estado === 'En progreso',
+                'text-bg-success': t.nombre_estado === 'Finalizado'
+              }">
+              {{ t.nombre_estado }}
+            </span>
+          </td>
+          <td>
+            <span style="cursor: pointer;" (click)="verAsignados(t.id_proyecto)" class="badge"
+              [ngClass]="{
+                'text-bg-danger': t.total_usuarios === 0,
+                'text-bg-success': t.total_usuarios > 1,
+              }">
+              {{ t.total_usuarios }}
+            </span>
+          </td>
+          <td>
+            <span style="cursor: pointer;" (click)="tareas(t.id_proyecto)" class="badge"
+              [ngClass]="{
+                'text-bg-danger': t.total_tareas === 0,
+                'text-bg-warning': t.total_tareas >= 1,
+              }">
+              {{ t.total_tareas }}
+            </span>
+          </td>
+          <td><small>{{ t.creado_por }}</small></td>
+          <td><small>{{ t.creado_en }}</small></td>
+          <td>
+            <a style="cursor: pointer;" (click)="verDetallesProyecto(t.id_proyecto)">
+              <i class="fa-solid fa-eye text-primary"></i>
+            </a>
+          </td>
+          <td *ngIf="rolUsuario === 1">
+            <a style="cursor: pointer;" (click)="eliminarTarea(t.id_proyecto, t.estado)">
+              <i class="fa-solid fa-trash text-danger"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="proyectos.length === 0" class="alert alert-warning text-center mt-3">
+    No hay Actividades Registradas para este proyecto.
+  </div>
+</div>
+
+<div class="modal fade" id="listaAsignados" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="crearUsuarioLabel">Asignados a esta Actividad</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-sm">
+            <thead class="table-light">
+              <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let u of usuariosAsignados; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ u.nombre }}</td>
+                <td>{{ u.email }}</td>
+              </tr>
+              <tr *ngIf="usuariosAsignados && usuariosAsignados.length === 0">
+                <td colspan="3" class="text-center">No hay usuarios asignados</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="crearActividad" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="crearUsuarioLabel">Crear Actividad</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="limpiarCampos()"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12">
+              <label class="form-label text-start w-100"><b>Titulo</b></label>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-file-signature"></i>
+                </span>
+                <input placeholder="Escriba el titulo de la actividad" name="titulo_crear" [(ngModel)]="crearPro.titulo" type="text" class="form-control" id="titulo_crear">
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12">
+              <label class="form-label text-start w-100"><b>Descripcion</b></label>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-file-lines"></i>
+                </span>
+                <textarea rows="4" placeholder="Escriba la descripcion de la actividad" name="descripcion_crear" [(ngModel)]="crearPro.descripcion" type="text" class="form-control" id="descripcion_crear"></textarea>
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12">
+                <label class="form-label text-start w-100"><b>Asignar Usuarios al Proyecto</b></label>
+              <div class="table-responsive border rounded p-3" style="max-height: 250px; overflow-y: auto;">
+                <table class="table table-sm table-bordered table-hover align-middle text-center">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Seleccionar</th>
+                      <th>Nombre</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let u of usuarios; let i = index">
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          [(ngModel)]="u.seleccionado"
+                          [name]="'asignado_' + u.id_usuario" />
+                      </td>
+                      <td>{{ u.nombre_usuario }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="limpiarCampos()">Cerrar</button>
+        <button type="button" class="btn btn-success" (click)="crearProyecto()">Crear</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="detallesActividad" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="detallesUsuarioLabel">Detalles Actividad</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="editar = false"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12">
+              <label *ngIf="!editar" class="form-label text-start w-100"><b>Titulo</b></label>
+              <label *ngIf="editar" class="form-label text-start w-100"><b>Editar Titulo</b></label>              
+              <div class="input-group mb-3">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-file-signature"></i>
+                </span>
+                <input [disabled]="!editar" placeholder="Escriba el titulo de la actividad" name="titulo_edit" [(ngModel)]="proyectoDatos.nombre" type="text" class="form-control" id="titulo_edit">
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12">
+              <label *ngIf="!editar" class="form-label text-start w-100"><b>Descripcion</b></label>
+              <label *ngIf="editar" class="form-label text-start w-100"><b>Editar Descripcion</b></label>                  
+              <div class="input-group mb-3">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-file-lines"></i>
+                </span>
+                <textarea [disabled]="!editar" rows="4" placeholder="Escriba la descripcion de la actividad" name="descripcion_edit" [(ngModel)]="proyectoDatos.descripcion" type="text" class="form-control" id="descripcion_edit"></textarea>
+              </div>
+            </div>
+            <div class="col-6 col-sm-6 col-md-6">
+              <label class="form-label text-start w-100"><b>Estado Actual</b></label>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
+                  <i class="fas fa-toggle-on"></i>
+                </span>
+                <input disabled name="estado_edit" [(ngModel)]="proyectoDatos.nombre_estado" type="text" class="form-control" id="estado_edit">
+              </div>
+            </div>
+            <div class="col-6 col-sm-6 col-md-6">
+              <label class="form-label text-start w-100"><b>Fecha Creacion</b></label>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-calendar"></i>
+                </span>
+                <input disabled name="fecha_edit" [(ngModel)]="proyectoDatos.creado_en" id="fecha_edit" type="text" class="form-control">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div *ngIf="rolUsuario === 1" class="modal-footer">
+        <button type="button" class="btn" (click)="editar = !editar"
+          [ngClass]="{
+              'btn-primary': editar == false,
+              'btn-danger': editar == true
+          }">
+          {{ editar ? 'Cancelar' : 'Editar' }}
+        </button>
+        <button *ngIf="editar" type="button" class="btn btn-success" (click)="guardarCambios(proyectoDatos.id_proyecto)">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="detallesTareas" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Tareas</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="rolUsuario === 1" class="card p-4 mb-4 shadow-sm">
+          <h5 class="mb-3">
+            <i class="fa-solid fa-plus me-1 text-success"></i>
+            Asignar Nueva Tarea
+          </h5>
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label text-start w-100"><strong>Título</strong></label>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-file-signature"></i>
+                </span>
+                <input type="text" [(ngModel)]="nuevaTarea.titulo" class="form-control" placeholder="Ej: Realizar informe semanal">
+              </div>
+            </div>
+            <div class="col-12">
+              <label class="form-label text-start w-100"><strong>Descripción</strong></label>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-file-lines"></i>
+                </span>
+                <textarea [(ngModel)]="nuevaTarea.descripcion" rows="4" class="form-control"
+                placeholder="Escribe aquí los detalles de la tarea..."></textarea>
+              </div>
+            </div>
+            <div class="col-12">
+              <label class="form-label text-start w-100"><strong>Asignar a</strong></label>
+              <div class="input-group mb-3">
+                <span class="input-group-text">
+                  <i class="fa-solid fa-user"></i>
+                </span>
+                <select class="form-select" [(ngModel)]="nuevaTarea.id_usuario">
+                  <option disabled selected value="">Seleccione un usuario</option>
+                  <option *ngFor="let u of usuariosProyecto" [value]="u.id_usuario">
+                    {{ u.nombre_usuario }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12 text-end mt-3">
+              <button class="btn btn-success" (click)="agregarTarea(idProyectoActual)">
+                <i class="fa-solid fa-check"></i> Asignar Tarea
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Responsable</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let tt of tareasInfo; let i = index">
+                <td><small>{{ i + 1 }}</small></td>
+                <td><small>{{ tt.titulo }}</small></td>
+                <td><small>{{ tt.descripcion }}</small></td>
+                <td>
+                  <span class="badge"
+                    [ngClass]="{
+                      'text-bg-danger': tt.nombre_estado === 'Cancelado',
+                      'text-bg-warning': tt.nombre_estado === 'En progreso',
+                      'text-bg-success': tt.nombre_estado === 'Finalizado'
+                    }">
+                    {{ tt.nombre_estado }}
+                  </span>
+                </td>
+                <td><small>{{ tt.nombre_usuario }}</small></td>
+                <td>
+                  <i
+                    class="fa-solid fa-circle-check text-success"
+                    style="cursor: pointer;"
+                    [class.opacity-25]="tt.nombre_estado === 'Finalizado' || tt.nombre_estado ==='Cancelado'"
+                    [title]="tt.nombre_estado === 'Finalizado' ? 'Ya finalizado' : 'Finalizar tarea'"
+                    (click)="tt.nombre_estado !== 'Finalizado' && cambiarEstadoTarea(tt.id_tarea, tt.id_proyecto, 'finalizado')">
+                  </i>
+                </td>
+                <td>
+                  <i
+                    class="fa-solid fa-circle-xmark text-danger"
+                    style="cursor: pointer;"
+                    [class.opacity-25]="tt.nombre_estado === 'Cancelado' || tt.nombre_estado ==='Finalizado'"
+                    [title]="tt.nombre_estado === 'Cancelado' ? 'Ya cancelado' : 'Cancelar tarea'"
+                    (click)="tt.nombre_estado !== 'Cancelado' && cambiarEstadoTarea(tt.id_tarea, tt.id_proyecto, 'cancelado')">
+                  </i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
