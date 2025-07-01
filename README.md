@@ -1,6 +1,6 @@
-# 📝 Módulo de Gestión de Actividades - Frontend
+# 📝 Sistema Tareas - Frontend
 
-Este repositorio contiene el frontend desarrollado en **Angular** para el sistema de gestión de actividades y tareas por Actividad. Permite crear actividades, asignar usuarios, registrar tareas y realizar seguimiento al progreso.
+Este repositorio contiene el frontend desarrollado en **Angular** para el sistema de gestión de actividades y tareas por Actividad. Permite crear actividades, asignar usuarios, registrar tareas, creacion de usuarios y realizar seguimiento al progreso.
 
 ## 🚀 Funcionalidades
 
