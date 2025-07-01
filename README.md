@@ -38,7 +38,6 @@ Este repositorio contiene el frontend desarrollado en **Angular** para el sistem
 ### Pantalla Tareas
 ![Tareas](./src/assets/tareas.png)
 
-> Puedes agregar imágenes del sistema aquí.
 
 ## 📦 Instalación
 
