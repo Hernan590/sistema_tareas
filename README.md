@@ -29,13 +29,19 @@ Este repositorio contiene el frontend desarrollado en **Angular** para el sistem
 
 ## 📸 Capturas
 
+### Pantalla de Login
+![Login](./assets/login.png)
+
 > Puedes agregar imágenes del sistema aquí.
 
 ## 📦 Instalación
 
 ```bash
 git clone https://github.com/Hernan590/sistema_tareas.git
-cd repositorio-frontend
+cd repositorio_frontend
 npm install
 ng serve
+
+🌐 Backend Requerido
+Este proyecto depende de la API desarrollada en Node.js. Repositorio del Backend: https://github.com/Hernan590/api_tareas
 
