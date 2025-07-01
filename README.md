@@ -30,7 +30,13 @@ Este repositorio contiene el frontend desarrollado en **Angular** para el sistem
 ## 📸 Capturas
 
 ### Pantalla de Login
-![Login](./assets/login.png)
+![Login](./src/assets/login.png)
+
+### Pantalla Usuarios
+![Dashboard](./src/assets/usuarios.png)
+
+### Pantalla Tareas
+![Tareas](./src/assets/tareas.png)
 
 > Puedes agregar imágenes del sistema aquí.
 
