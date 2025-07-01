@@ -1,27 +1,24 @@
 <div class="container mt-4">
-  <h2 class="mb-3">Modulo Actividades - Tareas</h2>
-  <div class="row">
-    <div class="col-6 col-sm-12 col-md-3">
-      <div class="input-group mb-3">
-        <span class="input-group-text">
-          <i class="fa-solid fa-signature"></i>        
-        </span>
+  <h2 class="mb-3">Módulo Actividades - Tareas</h2>
+
+  <div class="row g-3">
+    <div class="col-12 col-sm-6 col-md-3">
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa-solid fa-signature"></i></span>
         <input type="text" [(ngModel)]="filtroTitulo" class="form-control" placeholder="Buscar por Título">
       </div>
     </div>
-    <div class="col-6 col-sm-12 col-md-3">
-      <div class="input-group mb-3">
-        <span class="input-group-text">
-          <i class="fa-solid fa-file-invoice"></i>        
-        </span>
+
+    <div class="col-12 col-sm-6 col-md-3">
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa-solid fa-file-invoice"></i></span>
         <input type="text" [(ngModel)]="filtroDescripcion" class="form-control" placeholder="Buscar por Descripción">
       </div>
     </div>
-    <div class="col-6 col-sm-12 col-md-3">
-      <div class="input-group mb-3">
-        <span class="input-group-text">
-          <i class="fas fa-toggle-on"></i>
-        </span>
+
+    <div class="col-12 col-sm-6 col-md-3">
+      <div class="input-group">
+        <span class="input-group-text"><i class="fas fa-toggle-on"></i></span>
         <select [(ngModel)]="filtroEstado" class="form-select">
           <option value="">Todos los Estados</option>
           <option value="En progreso">En progreso</option>
@@ -30,13 +27,15 @@
         </select>
       </div>
     </div>
-    <div *ngIf="rolUsuario === 1" class="col-6 col-sm-12 col-md-3">
+
+    <div *ngIf="rolUsuario === 1" class="col-12 col-sm-6 col-md-3 d-grid">
       <button class="btn btn-success" (click)="abrirModalCrearTarea()">
         Nueva Actividad <i class="fa-solid fa-plus"></i>
       </button>
     </div>
   </div>
-  <div class="table-responsive">
+
+  <div class="table-responsive mt-4">
     <table class="table table-bordered table-hover align-middle">
       <thead class="table-light">
         <tr>
@@ -47,19 +46,18 @@
           <th>Asignados</th>
           <th>Tareas</th>
           <th>Creado Por</th>
-          <th>Fecha Creacion</th>
+          <th>Fecha Creación</th>
           <th></th>
           <th *ngIf="rolUsuario === 1"></th>
         </tr>
       </thead>
       <tbody>
-        <tr>
         <tr *ngFor="let t of proyectosFiltrados; let i = index">
           <td><small>{{ i + 1 }}</small></td>
           <td><small>{{ t.nombre }}</small></td>
           <td class="text-truncate" style="max-width: 250px;" [title]="t.descripcion">
             <small>{{ t.descripcion.length > 50 ? (t.descripcion | slice:0:50) + '...' : t.descripcion }}</small>
-          </td>          
+          </td>
           <td>
             <span class="badge"
               [ngClass]="{
@@ -74,7 +72,7 @@
             <span style="cursor: pointer;" (click)="verAsignados(t.id_proyecto)" class="badge"
               [ngClass]="{
                 'text-bg-danger': t.total_usuarios === 0,
-                'text-bg-success': t.total_usuarios > 1,
+                'text-bg-success': t.total_usuarios > 1
               }">
               {{ t.total_usuarios }}
             </span>
@@ -83,7 +81,7 @@
             <span style="cursor: pointer;" (click)="tareas(t.id_proyecto)" class="badge"
               [ngClass]="{
                 'text-bg-danger': t.total_tareas === 0,
-                'text-bg-warning': t.total_tareas >= 1,
+                'text-bg-warning': t.total_tareas >= 1
               }">
               {{ t.total_tareas }}
             </span>
@@ -104,10 +102,12 @@
       </tbody>
     </table>
   </div>
+
   <div *ngIf="proyectos.length === 0" class="alert alert-warning text-center mt-3">
     No hay Actividades Registradas para este proyecto.
   </div>
 </div>
+
 
 <div class="modal fade" id="listaAsignados" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">

@@ -1,17 +1,17 @@
 <div class="container mt-4">
-  <h2 class="mb-3">Modulo Usuarios</h2>
-  <div class="row">
-    <div class="col-6 col-sm-12 col-md-3">
-      <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
-        <input type="text" class="form-control" placeholder="Buscar usuario..." [(ngModel)]="terminoBusqueda" aria-label="Buscar"aria-describedby="basic-addon1"/>
+  <h2 class="mb-3">Módulo Usuarios</h2>
+
+  <div class="row g-3">
+    <div class="col-12 col-sm-6 col-md-3">
+      <div class="input-group">
+        <span class="input-group-text"><i class="fas fa-search"></i></span>
+        <input type="text" class="form-control" placeholder="Buscar usuario..." [(ngModel)]="terminoBusqueda" />
       </div>
     </div>
-    <div class="col-6 col-sm-12 col-md-3">
-      <div class="input-group mb-3">
-        <span class="input-group-text">
-          <i class="fas fa-toggle-on"></i>
-        </span>
+
+    <div class="col-12 col-sm-6 col-md-3">
+      <div class="input-group">
+        <span class="input-group-text"><i class="fas fa-toggle-on"></i></span>
         <select class="form-select" [(ngModel)]="filtroEstado">
           <option value="">Todos los estados</option>
           <option [value]="1">Activo</option>
@@ -19,11 +19,10 @@
         </select>
       </div>
     </div>
-    <div class="col-6 col-sm-12 col-md-4">
-      <div class="input-group mb-3">
-        <span class="input-group-text">
-          <i class="fas fa-user-shield"></i>
-        </span>
+
+    <div class="col-12 col-sm-6 col-md-4">
+      <div class="input-group">
+        <span class="input-group-text"><i class="fas fa-user-shield"></i></span>
         <select class="form-select" [(ngModel)]="filtroRol">
           <option value="">Todos los roles</option>
           <option value="Administrador">Administrador</option>
@@ -31,59 +30,56 @@
         </select>
       </div>
     </div>
-    <div class="col-6 col-sm-12 col-md-2">
-      <button type="button" class="btn btn-outline-success" (click)="abrirModalCrear()">Crear Usuario</button>
+
+    <div class="col-12 col-sm-6 col-md-2">
+      <button type="button" class="btn btn-outline-success w-100" (click)="abrirModalCrear()">Crear Usuario</button>
     </div>
   </div>
-  <table class="table table-bordered table-hover align-middle" *ngIf="usuariosFiltrados.length > 0; else sinDatos">
-    <thead class="table-light">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Email</th>
-        <th scope="col">Rol</th>
-        <th scope="col">Estado</th>
-        <th scope="col">Creado</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let u of usuariosFiltrados; let i = index">
-        <td><small></small>{{ i + 1 }}</td>
-        <td><small>{{ u.nombre_usuario }}</small></td>
-        <td><small>{{ u.email }}</small></td>
-        <td><small>{{ u.rol }}</small></td>
-        <td>
-          <span
-            class="badge rounded-pill"
-            [ngClass]="{
-              'text-bg-success': u.estado === 1,
-              'text-bg-danger': u.estado !== 1
-            }"
-          >
-            <small>{{ u.estado === 1 ? 'Activo' : 'Inactivo' }}</small>
-          </span>
-        </td>
-        <td><small>{{ u.creado_en }}</small></td>
-        <td>
-          <a style="cursor: pointer;" (click)="detallesUsuario(u.id_usuario)">
-            <i class="fa-solid fa-eye text-primary"></i>
-          </a>
-        </td>
-        <td>
-          <a style="cursor: pointer;" (click)="inactivarUsuario(u.id_usuario, u.estado)">
-            <i 
-              class="fa-solid" 
-              [ngClass]="u.estado === 1 ? 'fa-trash-can text-danger' : 'fa-rotate-left text-success'">
-            </i>
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+
+  <div class="table-responsive mt-4">
+    <table class="table table-bordered table-hover align-middle" *ngIf="usuariosFiltrados.length > 0; else sinDatos">
+      <thead class="table-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Email</th>
+          <th scope="col">Rol</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Creado</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of usuariosFiltrados; let i = index">
+          <td><small>{{ i + 1 }}</small></td>
+          <td><small>{{ u.nombre_usuario }}</small></td>
+          <td><small>{{ u.email }}</small></td>
+          <td><small>{{ u.rol }}</small></td>
+          <td>
+            <span class="badge rounded-pill"
+              [ngClass]="{ 'text-bg-success': u.estado === 1, 'text-bg-danger': u.estado !== 1 }">
+              <small>{{ u.estado === 1 ? 'Activo' : 'Inactivo' }}</small>
+            </span>
+          </td>
+          <td><small>{{ u.creado_en }}</small></td>
+          <td>
+            <a style="cursor: pointer;" (click)="detallesUsuario(u.id_usuario)">
+              <i class="fa-solid fa-eye text-primary"></i>
+            </a>
+          </td>
+          <td>
+            <a style="cursor: pointer;" (click)="inactivarUsuario(u.id_usuario, u.estado)">
+              <i class="fa-solid" [ngClass]="u.estado === 1 ? 'fa-trash-can text-danger' : 'fa-rotate-left text-success'"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <ng-template #sinDatos>
-    <div class="alert alert-warning">No hay usuarios registrados.</div>
+    <div class="alert alert-warning mt-4">No hay usuarios registrados.</div>
   </ng-template>
 </div>
 
@@ -96,58 +92,48 @@
       </div>
       <div class="modal-body">
         <form>
-          <div class="row">
-            <div class="col-6 col-sm-6 col-md-6">
-              <label *ngIf="!editar" class="form-label text-start w-100"><b>Nombre</b></label>
-              <label *ngIf="editar" class="form-label text-start w-100"><b>Editar Nombre</b></label>
-              <div class="input-group mb-3">
-                <span class="input-group-text">
-                  <i class="fa-solid fa-user-tie"></i>
-                </span>
-                <input [disabled]="!editar" name="nombre" [(ngModel)]="usuarioSeleccionado.nombre_usuario" type="text" class="form-control" id="nombre">
+          <div class="row g-3">
+            <div class="col-12 col-sm-6">
+              <label class="form-label text-start w-100"><b>{{ editar ? 'Editar Nombre' : 'Nombre' }}</b></label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-user-tie"></i></span>
+                <input [disabled]="!editar" name="nombre" [(ngModel)]="usuarioSeleccionado.nombre_usuario" type="text" class="form-control" />
               </div>
             </div>
-            <div class="col-6 col-sm-6 col-md-6">
-              <label *ngIf="!editar" class="form-label text-start w-100"><b>Correo</b></label>
-              <label *ngIf="editar" class="form-label text-start w-100"><b>Editar Correo</b></label>
-              <div class="input-group mb-3">
-                <span class="input-group-text">
-                  <i class="fa-solid fa-at"></i>
-                </span>
-                <input [disabled]="!editar" name="correo" [(ngModel)]="usuarioSeleccionado.email" type="text" class="form-control" id="correo">
-              </div>            
+
+            <div class="col-12 col-sm-6">
+              <label class="form-label text-start w-100"><b>{{ editar ? 'Editar Correo' : 'Correo' }}</b></label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-at"></i></span>
+                <input [disabled]="!editar" name="correo" [(ngModel)]="usuarioSeleccionado.email" type="text" class="form-control" />
+              </div>
             </div>
-            <div class="col-12 col-sm-12 col-md-12">
-              <label *ngIf="!editar" class="form-label text-start w-100"><b>Rol</b></label>
-              <label *ngIf="editar" class="form-label text-start w-100"><b>Editar Rol</b></label>
-              <div class="input-group mb-3">
-                <span class="input-group-text">
-                  <i class="fas fa-user-shield"></i>
-                </span>
+
+            <div class="col-12">
+              <label class="form-label text-start w-100"><b>{{ editar ? 'Editar Rol' : 'Rol' }}</b></label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-user-shield"></i></span>
                 <select [disabled]="!editar" class="form-select" [(ngModel)]="usuarioSeleccionado.rol" name="rol">
                   <option value="1">Administrador</option>
                   <option value="2">Usuario</option>
                 </select>
               </div>
             </div>
-            <div class="col-12 col-sm-12 col-md-12">
-              <label class="form-label text-start w-100"><b>Fecha De Creacion</b></label>
-              <div class="input-group mb-3">c 
-                <span class="input-group-text">
-                  <i class="fa-solid fa-calendar-days"></i>
-                </span>
-                <input name="fechaC" [(ngModel)]="usuarioSeleccionado.creado_en" disabled type="text" class="form-control" id="fechacreacion">
-              </div>  
+
+            <div class="col-12">
+              <label class="form-label text-start w-100"><b>Fecha De Creación</b></label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
+                <input name="fechaC" [(ngModel)]="usuarioSeleccionado.creado_en" disabled type="text" class="form-control" />
+              </div>
             </div>
           </div>
         </form>
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn" (click)="editar = !editar"
-          [ngClass]="{
-              'btn-primary': editar == false,
-              'btn-danger': editar == true
-          }">
+          [ngClass]="{ 'btn-primary': editar == false, 'btn-danger': editar == true }">
           {{ editar ? 'Cancelar' : 'Editar' }}
         </button>
         <button *ngIf="editar" type="button" class="btn btn-success" (click)="guardarCambios(usuarioSeleccionado.id_usuario)">Guardar</button>
@@ -165,50 +151,46 @@
       </div>
       <div class="modal-body">
         <form>
-          <div class="row">
-            <div class="col-6 col-sm-6 col-md-6">
+          <div class="row g-3">
+            <div class="col-12 col-sm-6">
               <label class="form-label text-start w-100"><b>Nombre</b></label>
-              <div class="input-group mb-3">
-                <span class="input-group-text">
-                  <i class="fa-solid fa-user-tie"></i>
-                </span>
-                <input placeholder="Escriba el nombre del usuario" name="nombre_crear" [(ngModel)]="crearUsuario.nombre_usuario" type="text" class="form-control" id="nombre_crear">
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-user-tie"></i></span>
+                <input type="text" id="nombre_crear" name="nombre_crear" [(ngModel)]="crearUsuario.nombre_usuario" class="form-control" placeholder="Escriba el nombre del usuario">
               </div>
             </div>
-            <div class="col-6 col-sm-6 col-md-6">
+
+            <div class="col-12 col-sm-6">
               <label class="form-label text-start w-100"><b>Correo</b></label>
-              <div class="input-group mb-3">
-                <span class="input-group-text">
-                  <i class="fa-solid fa-at"></i>
-                </span>
-                <input placeholder="Escriba el correo del usuario" name="correo_crear" [(ngModel)]="crearUsuario.correo" type="text" class="form-control" id="correo_crear">
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-at"></i></span>
+                <input type="text" id="correo_crear" name="correo_crear" [(ngModel)]="crearUsuario.correo" class="form-control" placeholder="Escriba el correo del usuario">
               </div>
             </div>
-            <div class="col-12 col-sm-12 col-md-12">
+
+            <div class="col-12">
               <label class="form-label text-start w-100"><b>Rol</b></label>
-              <div class="input-group mb-3">
-                <span class="input-group-text">
-                  <i class="fas fa-user-shield"></i>
-                </span>
-                <select class="form-select" [(ngModel)]="crearUsuario.rol" name="rol_crear">
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-user-shield"></i></span>
+                <select class="form-select" name="rol_crear" [(ngModel)]="crearUsuario.rol">
                   <option value="" disabled selected>Seleccione el rol que desea desempeñar</option>
                   <option value="1">Administrador</option>
                   <option value="2">Usuario</option>
                 </select>
               </div>
             </div>
-            <div class="col-12 col-sm-12 col-md-12">
+
+            <div class="col-12">
               <label class="form-label text-start w-100"><b>Contraseña</b></label>
-              <div class="input-group mb-3">
-                <span class="input-group-text">
-                  <i class="fa-solid fa-lock"></i>                
-                </span>
-                <input placeholder="Por favor ingresar una contraseña para el usuario" name="password_crear" [(ngModel)]="crearUsuario.password" type="password" class="form-control" id="password_crear">
+              <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                <input type="password" id="password_crear" name="password_crear" [(ngModel)]="crearUsuario.password" class="form-control" placeholder="Por favor ingresar una contraseña para el usuario">
               </div>
             </div>
           </div>
         </form>
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="limpiarCamposCrear()">Cerrar</button>
         <button type="button" class="btn btn-success" (click)="crearUser()">Crear</button>
